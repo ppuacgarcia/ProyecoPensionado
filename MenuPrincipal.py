@@ -13,6 +13,8 @@ def MenP(pw):
     def cmdVentas():
        Ventas(pw)
        fMenuP.destroy() 
+       fMenuP.pack_forget()
+       fMenuP.grid_forget()
     #comando para entrar a Hospedaje
     def cmdHospedaje():
        Pensionistas(pw)

@@ -60,18 +60,19 @@ EntryPassword=Entry(flog,textvariable=Username)
 EntryPassword.config(width=30,font=(fonttxt,12),textvariable=Password,show='■')
 EntryPassword.place(x=posx,y=posy+340)
 #button
-def btnLog(pw, x, y, text, bcolor, fcolor, command, font, siz, tipe):
-        #Botones para menu
-        def on_enter(e):
-            buttons['background'] = bcolor
-            buttons['foreground'] = fcolor
+
+def on_enter(e):
+    button['background'] = hiColor
+    button['foreground'] = '#FFFFFF'        
             
-        def on_leave(e):
-            buttons['background'] = fcolor
-            buttons['foreground'] = bcolor
-        buttons = Button(pw, width=15, height=1, text= text, fg  = bcolor, bg=fcolor, command=command, border=0, activebackground=bcolor, activeforeground=fcolor,font=(font, siz, tipe))
-        buttons.bind("<Enter>", on_enter)
-        buttons.bind("<Leave>", on_leave)
-        buttons.place(x=x, y=y)
-btnLog(pw,posx+25,posy+370,"Entrar", hiColor, '#FFFFFF', Correcto,'Arial', 16,'bold')
+def on_leave(e):
+    button['background'] = '#ffffff'
+    button['foreground'] = hiColor
+button = Button(pw, width=15, height=1, text='Entrar', fg  = hiColor, bg='#3F5657', 
+                command=Correcto, border=0, activebackground='#3F5657', activeforeground='#ffffff'
+                ,font=('Arial', 16,'bold'))
+button.bind("<Enter>", on_enter)
+button.bind("<Leave>", on_leave)
+button.place(x=posx+25, y=posy+370)        
+
 pw.mainloop()
