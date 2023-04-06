@@ -12,7 +12,6 @@ pw.configure(bg='#3F5657')
 pw.resizable(0,0)
 pw.title('Pensionado')
 pw.iconbitmap('Images/user.ico')
-
 fonttxt = 'Arial'
 posx=430
 posy=100
@@ -30,7 +29,6 @@ def Correcto():
 def hi(x = None, y = None, event = None):
     #print(conn.getPass+"contrasenia")
     now = datetime.now() # current date and time
-     
 #Labels
 #imagenes
 global logoH
@@ -71,8 +69,6 @@ def btnLog(pw, x, y, text, bcolor, fcolor, command, font, siz, tipe):
         def on_leave(e):
             buttons['background'] = fcolor
             buttons['foreground'] = bcolor
-            
-            
         buttons = Button(pw, width=15, height=1, text= text, fg  = bcolor, bg=fcolor, command=command, border=0, activebackground=bcolor, activeforeground=fcolor,font=(font, siz, tipe))
         buttons.bind("<Enter>", on_enter)
         buttons.bind("<Leave>", on_leave)
