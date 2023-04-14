@@ -27,7 +27,7 @@ def Correcto():
         MenP(pw)
         flog.destroy()
         print("entro")
-        button.place_forget();
+        button.place_forget()
         
     else:
         print("no entro")

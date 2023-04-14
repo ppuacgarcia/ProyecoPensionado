@@ -18,7 +18,7 @@ class Ventas:
         self.fuenteP = font=('Arial', 15,'bold')
         self.bglabel = '#3F5657'
         self.fglabel = '#FFFFFF'
-        self.posx = 80
+        self.posx = 50
 
         #Etiquetas
         self.lab('Ventas', self.fuenteG, self.bglabel, self.fglabel, 580, 10)
@@ -39,6 +39,24 @@ class Ventas:
         
         #Botones
         self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.on_button_click, 'Arial', 12,'bold',18,2)
+        
+        #Tabla
+        self.tabladata = ttk.Treeview(self.w)
+        self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3","col4","col5",), height=21)
+        self.tabladata.column("#0", width=40)
+        self.tabladata.column("col1",width=200, anchor=CENTER)
+        self.tabladata.column("col2",width=80, anchor=CENTER)
+        self.tabladata.column("col3",width=50, anchor=CENTER)
+        self.tabladata.column("col4",width=50, anchor=CENTER)
+        self.tabladata.column("col5",width=50, anchor=CENTER)
+        self.tabladata.heading("#0",text="Id",anchor=CENTER)
+        self.tabladata.heading("col1",text="Comida",anchor=CENTER)
+        self.tabladata.heading("col2",text="Proteina",anchor=CENTER)
+        self.tabladata.heading("col3",text="Tipo 1",anchor=CENTER)
+        self.tabladata.heading("col4",text="Tipo 2",anchor=CENTER)
+        self.tabladata.heading("col5",text="Tipo 3",anchor=CENTER)
+        self.tabladata.place(x=680,y=70)
+        self.tabladata.bind("<Double-Button-1>",self.doubleClickTabla)
 
                
         
