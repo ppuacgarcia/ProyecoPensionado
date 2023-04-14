@@ -111,9 +111,6 @@ class Ventas:
                 result+=nombreB[i]
         return result
     
-    def on_button_click(self):
-        self.SearchOnTable
-        self.AddToTable()
     
     def AddToTable(self):
         cantidad_filas = len(self.tabladata.get_children())+1
