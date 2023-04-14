@@ -1,5 +1,15 @@
 from tkinter import *
+import tkinter as tk
+from tkinter import ttk
 from PIL import Image, ImageTk
+from matplotlib import pyplot as plt
+import numpy as np
+import pandas as pd
+from matplotlib.backends.backend_tkagg import FigureCanvas
+from tkcalendar import *
+
+hiColor='#65A0A3'
+
 class Pensionistas:
     def __init__(self,ventanaPrincipal):
         self.w = Frame(ventanaPrincipal,width=1200,height=675,bg='#3F5657')
@@ -11,20 +21,19 @@ class Pensionistas:
         self.posx = 50
 
         #Etiquetas
-        self.lab('Ventas', self.fuenteG, self.bglabel, self.fglabel, 580, 10)
-        self.lab('Nombre Comida', self.fuenteP, self.bglabel, self.fglabel, self.posx, 55)
-        self.lab('Proteina', self.fuenteP, self.bglabel, self.fglabel, self.posx, 85)
+        self.lab('Pensionistas', self.fuenteG, self.bglabel, self.fglabel, 560, 10)
+        self.lab('Nombre', self.fuenteP, self.bglabel, self.fglabel, self.posx, 55)
+        self.lab('Fecha Nacimiento', self.fuenteP, self.bglabel, self.fglabel, self.posx, 85)
+        self.lab('Fecha Pago', self.fuenteP, self.bglabel, self.fglabel, self.posx, 115)
 
         #Cuadros de texto
-        self.nombreComida=self.Ent(65, 250, 60)
+        self.nombrePens=self.Ent(65, 250, 60)
         
-        
-        #comboBox
-        self.combProteina = ['Res','Pollo','Mariscos', 'Cerdo']
-        self.comboProteina = ttk.Combobox(self.w, value=self.combProteina, width=62)
-        self.comboProteina.place(x=250, y=90)
-        self.comboProteina["state"]="readonly"
-        self.comboProteina.current(1)
+        #Calendarios
+        self.calNac=DateEntry(self.w,width=61)
+        self.calNac.place(x=250,y=90)
+        self.calPago=DateEntry(self.w,width=61)
+        self.calPago.place(x=250,y=120)
         
         
         #Botones
@@ -32,19 +41,15 @@ class Pensionistas:
         
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
-        self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3","col4","col5",), height=21)
+        self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3"), height=21)
         self.tabladata.column("#0", width=40)
-        self.tabladata.column("col1",width=200, anchor=CENTER)
-        self.tabladata.column("col2",width=80, anchor=CENTER)
-        self.tabladata.column("col3",width=50, anchor=CENTER)
-        self.tabladata.column("col4",width=50, anchor=CENTER)
-        self.tabladata.column("col5",width=50, anchor=CENTER)
+        self.tabladata.column("col1",width=280, anchor=CENTER)
+        self.tabladata.column("col2",width=70, anchor=CENTER)
+        self.tabladata.column("col3",width=70, anchor=CENTER)
         self.tabladata.heading("#0",text="Id",anchor=CENTER)
-        self.tabladata.heading("col1",text="Comida",anchor=CENTER)
-        self.tabladata.heading("col2",text="Proteina",anchor=CENTER)
-        self.tabladata.heading("col3",text="Tipo 1",anchor=CENTER)
-        self.tabladata.heading("col4",text="Tipo 2",anchor=CENTER)
-        self.tabladata.heading("col5",text="Tipo 3",anchor=CENTER)
+        self.tabladata.heading("col1",text="Nombre",anchor=CENTER)
+        self.tabladata.heading("col2",text="Nacimiento",anchor=CENTER)
+        self.tabladata.heading("col3",text="Fecha pago",anchor=CENTER)
         self.tabladata.place(x=680,y=70)
 
                
@@ -104,9 +109,10 @@ class Pensionistas:
     
     def AddToTable(self):
         cantidad_filas = len(self.tabladata.get_children())+1
-        comida = self.nombreComida.get()
-        Proteina = self.comboProteina.get()
-        self.tabladata.insert("", tk.END, text=cantidad_filas, values=(comida, Proteina,0,0,0))
+        comida = self.nombrePens.get()
+        Nac = self.calNac.get()+""
+        pago = self.calNac.get()+""
+        self.tabladata.insert("", tk.END, text=cantidad_filas, values=(comida, Nac, pago))
         pass
     
     def SearchOnTable(self):
@@ -117,10 +123,10 @@ class Pensionistas:
             nombre = self.tabladata.item(child, "values")[0]
             print("---"+nombre+"---")
             print(2)
-            if(self.nombreComida.get() == nombre):
+            if(self.nombrePens.get() == nombre):
                 print(3)
                 resultado = True
-                print("Esta comida ya se ha agregado anteriormente")
+                print("Esta Persona ya se ha agregado anteriormente")
         if(resultado == False): 
             self.AddToTable()
         
