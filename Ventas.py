@@ -31,14 +31,14 @@ class Ventas:
         
         #comboBox
         self.combProteina = ['Res','Pollo','Mariscos', 'Cerdo']
-        self.comboRan = ttk.Combobox(self.w, value=self.combProteina, width=62)
-        self.comboRan.place(x=250, y=90)
-        self.comboRan["state"]="readonly"
-        self.comboRan.current(1)
+        self.comboProteina = ttk.Combobox(self.w, value=self.combProteina, width=62)
+        self.comboProteina.place(x=250, y=90)
+        self.comboProteina["state"]="readonly"
+        self.comboProteina.current(1)
         
         
         #Botones
-        self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.on_button_click, 'Arial', 12,'bold',18,2)
+        self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.SearchOnTable, 'Arial', 12,'bold',18,2)
         
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
@@ -56,7 +56,6 @@ class Ventas:
         self.tabladata.heading("col4",text="Tipo 2",anchor=CENTER)
         self.tabladata.heading("col5",text="Tipo 3",anchor=CENTER)
         self.tabladata.place(x=680,y=70)
-        self.tabladata.bind("<Double-Button-1>",self.doubleClickTabla)
 
                
         
@@ -113,4 +112,30 @@ class Ventas:
         return result
     
     def on_button_click(self):
+        self.SearchOnTable
+        self.AddToTable()
+    
+    def AddToTable(self):
+        cantidad_filas = len(self.tabladata.get_children())+1
+        comida = self.nombreComida.get()
+        Proteina = self.comboProteina.get()
+        self.tabladata.insert("", tk.END, text=cantidad_filas, values=(comida, Proteina,0,0,0))
+        pass
+    
+    def SearchOnTable(self):
+        resultado = False
+        print("1")
+        for child in self.tabladata.get_children():
+            # Obtener los valores de las celdas de la fila
+            nombre = self.tabladata.item(child, "values")[0]
+            print("---"+nombre+"---")
+            print(2)
+            if(self.nombreComida.get() == nombre):
+                print(3)
+                resultado = True
+                print("Esta comida ya se ha agregado anteriormente")
+        if(resultado == False): 
+            self.AddToTable()
+        
+    def clearAll(self):
         pass
