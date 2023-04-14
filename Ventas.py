@@ -19,7 +19,6 @@ class Ventas:
         self.bglabel = '#3F5657'
         self.fglabel = '#FFFFFF'
         self.posx = 50
-
         #Etiquetas
         self.lab('Ventas', self.fuenteG, self.bglabel, self.fglabel, 580, 10)
         self.lab('Nombre Comida', self.fuenteP, self.bglabel, self.fglabel, self.posx, 55)
@@ -27,19 +26,16 @@ class Ventas:
 
         #Cuadros de texto
         self.nombreComida=self.Ent(65, 250, 60)
-        
-        
         #comboBox
         self.combProteina = ['Res','Pollo','Mariscos', 'Cerdo']
         self.comboProteina = ttk.Combobox(self.w, value=self.combProteina, width=62)
         self.comboProteina.place(x=250, y=90)
         self.comboProteina["state"]="readonly"
         self.comboProteina.current(1)
-        
-        
+
         #Botones
         self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.SearchOnTable, 'Arial', 12,'bold',18,2)
-        
+        self.vender = self.btn(675, 600, 'vender', '#FFFFFF', hiColor, self.clearAll, 'Arial', 12,'bold',18,2)
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
         self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3","col4","col5",), height=21)
@@ -56,13 +52,14 @@ class Ventas:
         self.tabladata.heading("col4",text="Tipo 2",anchor=CENTER)
         self.tabladata.heading("col5",text="Tipo 3",anchor=CENTER)
         self.tabladata.place(x=680,y=70)
+       
 
                
         
     def cmd(self):
         self.conn.commit()
         self.w.destroy()
-
+        
     #Labels formulario
     def lab(self,text, font, bg, fg, x, y):
         labe = Label(self.w,text=text, font=font, bg=bg, foreground=fg)
@@ -116,7 +113,7 @@ class Ventas:
         cantidad_filas = len(self.tabladata.get_children())+1
         comida = self.nombreComida.get()
         Proteina = self.comboProteina.get()
-        self.tabladata.insert("", tk.END, text=cantidad_filas, values=(comida, Proteina,0,0,0))
+        self.tabladata.insert("", tk.END, text=cantidad_filas, values=(comida, Proteina,1,5,5))
         pass
     
     def SearchOnTable(self):
@@ -133,6 +130,55 @@ class Ventas:
                 print("Esta comida ya se ha agregado anteriormente")
         if(resultado == False): 
             self.AddToTable()
-        
+            self.setPlots()
+    def setPlots(self):
+         ####Plot Pie####
+        fig=plt.figure(figsize=(6,6),dpi=100)
+        fig.set_size_inches(2.5,2.5)
+        Prot=self.GetProt()
+        colors=["#A85802","#33F551","#F58B1B","#5202F5"]
+        explode=[0.2,0,0,0]
+        plt.pie(Prot,explode=explode,labels=self.combProteina,colors=colors,autopct='%1.1f%%',shadow=True,startangle=140)
+        plt.axis('equal')
+        canvasvar=FigureCanvas(fig,master=self.w)
+        canvasvar.draw()
+        canvasvar.get_tk_widget().place(anchor=CENTER,x=200,y=400)
+        ####Plot Bar chart####
+        figBar=plt.figure(figsize=(6,6),dpi=100)
+        figBar.set_size_inches(2.5,2.5)
+        labelpos=np.arange(len(self.combProteina))
+        sizesPrecios=[Prot[0]*25,Prot[1]*25,Prot[2]*25,Prot[3]*25]
+        colors=["#A85802","#33F551","#F58B1B","#5202F5"]
+        explode=[0.2,0,0,0]
+        plt.bar(labelpos,sizesPrecios,align=CENTER,alpha=1.0)
+        plt.xticks(labelpos,self.combProteina)
+        plt.ylabel('precios')
+        plt.xlabel('tipos de proteina')
+        plt.tight_layout(pad=2.2,w_pad=0.5,h_pad=0.1)
+        plt.xticks(rotation=50,horizontalalignment='center')
+        for index, datapoints in enumerate(sizesPrecios):
+            plt.text(x=index,y=datapoints+0.3,s=f"{datapoints}",fontdict=dict(fontsize=10),ha='center',va='bottom')
+        canvasvar=FigureCanvas(figBar,master=self.w)
+        canvasvar.draw()
+        canvasvar.get_tk_widget().place(anchor=CENTER,x=500,y=400)
+#Suma el numero de ventas con cada proteina 
+    def GetProt(self):
+        resultS=[0,0,0,0]
+        for child in self.tabladata.get_children():
+            proteina = self.tabladata.item(child, "values")[1]
+            #['Res','Pollo','Mariscos', 'Cerdo']
+
+            if self.combProteina[0]==proteina:
+                resultS[0]+=int(self.tabladata.item(child, "values")[2])+int(self.tabladata.item(child, "values")[3])+int(self.tabladata.item(child, "values")[4])
+            elif self.combProteina[1]==proteina:
+                 resultS[1]+=int(self.tabladata.item(child, "values")[2])+int(self.tabladata.item(child, "values")[3])+int(self.tabladata.item(child, "values")[4])
+            elif self.combProteina[2]==proteina:
+                resultS[2]+=int(self.tabladata.item(child, "values")[2])+int(self.tabladata.item(child, "values")[3])+int(self.tabladata.item(child, "values")[4])
+            elif self.combProteina[3]==proteina:
+                resultS[3]+=int(self.tabladata.item(child, "values")[2])+int(self.tabladata.item(child, "values")[3])+int(self.tabladata.item(child, "values")[4])               
+        print("======================================\n")
+        print(resultS)
+        print("======================================\n")
+        return resultS
     def clearAll(self):
         pass
