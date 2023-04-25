@@ -25,7 +25,7 @@ class MenP:
     #comando para entrar a Hospedaje
     def cmdHospedaje(self):
        Pensionistas(self.fMenuP)
-       self.pw.destroy() 
+      #s self.pw.destroy() 
     #Comando para entrar a Pensionistas
     def cmdPensionistas(self):
         Hospedaje(self.fMenuP)
