@@ -21,11 +21,13 @@ class MenP:
         self.btnmenu(self.fMenuP, 400, 276, 'Hospedaje', hiColor,bgcolor, self.cmdPensionistas,'Arial', 16,'bold',)
     def cmdVentas(self):
        Ventas(self.fMenuP)
+
        #self.pw.destroy() 
+
     #comando para entrar a Hospedaje
     def cmdHospedaje(self):
        Pensionistas(self.fMenuP)
-       self.pw.destroy() 
+      #s self.pw.destroy() 
     #Comando para entrar a Pensionistas
     def cmdPensionistas(self):
         Hospedaje(self.fMenuP)
