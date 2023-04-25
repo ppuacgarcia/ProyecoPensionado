@@ -6,24 +6,29 @@ import os
 from datetime import datetime
 #import de pestañas
 from MenuPrincipal import *
+hiColor='#65A0A3'
+colorbg="#3F5657"
 pw = Tk()
 pw.geometry('1200x675')
-pw.configure(bg='#3F5657')
+pw.configure(bg=colorbg)
 pw.resizable(0,0)
 pw.title('Pensionado')
 pw.iconbitmap('Images/user.ico')
 fonttxt = 'Arial'
 posx=430
 posy=100
-hiColor='#65A0A3'
-colorbg="#3F5657"
+
 flog = Frame(pw,width=1200,height=675,bg=colorbg)
 flog.place(x=0, y=0)
+#Import the image using PhotoImage function
+click_btn= PhotoImage(file='images/menu.png')
 def Correcto():
     if(Username.get()=="" and Password.get()==""):
         MenP(pw)
         flog.destroy()
         print("entro")
+        button.place_forget()
+        
     else:
         print("no entro")
 def hi(x = None, y = None, event = None):
@@ -64,15 +69,13 @@ EntryPassword.place(x=posx,y=posy+340)
 def on_enter(e):
     button['background'] = hiColor
     button['foreground'] = '#FFFFFF'        
-            
 def on_leave(e):
     button['background'] = '#ffffff'
     button['foreground'] = hiColor
-button = Button(pw, width=15, height=1, text='Entrar', fg  = hiColor, bg='#3F5657', 
-                command=Correcto, border=0, activebackground='#3F5657', activeforeground='#ffffff'
+button = Button(pw, width=15, height=1, text='Entrar', fg  = hiColor, bg='#ffffff', 
+                command=Correcto, border=0, activebackground=colorbg, activeforeground='#ffffff'
                 ,font=('Arial', 16,'bold'))
 button.bind("<Enter>", on_enter)
 button.bind("<Leave>", on_leave)
 button.place(x=posx+25, y=posy+370)        
-
 pw.mainloop()
