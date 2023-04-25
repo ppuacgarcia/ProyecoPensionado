@@ -65,7 +65,6 @@ EntryPassword=Entry(flog,textvariable=Username)
 EntryPassword.config(width=30,font=(fonttxt,12),textvariable=Password,show='■')
 EntryPassword.place(x=posx,y=posy+340)
 #button
-
 def on_enter(e):
     button['background'] = hiColor
     button['foreground'] = '#FFFFFF'        
