@@ -38,7 +38,7 @@ class Pensionistas:
         
         #Botones
         self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.SearchOnTable, 'Arial', 12,'bold',18,2)
-        
+        self.MenuP=self.btn(0, 0, 'Menu', '#FFFFFF', hiColor, self.Correcto, 'Arial', 12,'bold',8,2)
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
         self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3"), height=21)
@@ -57,7 +57,10 @@ class Pensionistas:
     def cmd(self):
         self.conn.commit()
         self.w.destroy()
-
+    def Correcto(self): 
+        #MenP(self.w)
+        self.w.destroy()
+        print("no entro")
     #Labels formulario
     def lab(self,text, font, bg, fg, x, y):
         labe = Label(self.w,text=text, font=font, bg=bg, foreground=fg)
