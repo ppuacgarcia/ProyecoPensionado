@@ -7,11 +7,13 @@ import numpy as np
 import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvas
 from tkcalendar import *
+from Conexion import conexion
 
 hiColor='#65A0A3'
 
 class Pensionistas:
     def __init__(self,ventanaPrincipal):
+        self.conn = conexion()
         self.w = Frame(ventanaPrincipal,width=1200,height=675,bg='#3F5657')
         self.w.place(x=0, y=0)
         self.fuenteG = font=('Arial', 19,'bold')
