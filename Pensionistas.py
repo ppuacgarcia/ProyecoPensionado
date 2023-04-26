@@ -8,7 +8,7 @@ import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvas
 from tkcalendar import *
 from Conexion import conexion
-
+from Pagos import *
 hiColor='#65A0A3'
 
 class Pensionistas:
@@ -37,6 +37,7 @@ class Pensionistas:
         #Botones
         self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.SearchOnTable, 'Arial', 12,'bold',18,2)
         self.MenuP=self.btn(0, 0, 'Menu', '#FFFFFF', hiColor, self.Correcto, 'Arial', 12,'bold',8,2)
+        self.Editar = self.btn(675, 600, 'vender', '#FFFFFF', hiColor, self.Pagos, 'Arial', 12,'bold',18,2)
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
         self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3"), height=21)
@@ -95,9 +96,14 @@ class Pensionistas:
         tabla.place(x=x,y=y)
         tabla.config(height=1)
         return tabla
-    
-    
-
+    def Pagos(self):
+        sw = Toplevel()
+        sw.geometry('500x350')
+        sw.configure(bg=hiColor)
+        sw.resizable(0,0)
+        sw.title('Pensionado')
+        sw.iconbitmap('Images/user.ico')
+        Pagos(sw)
     def mayus(self,nombreB):
         result=""
         for i in range ( len (nombreB) ):
