@@ -105,14 +105,14 @@ class Ventas:
         self.w.destroy()
         print("no entro")
     def Vender(self):
-        sw = Toplevel()
-        sw.geometry('500x350')
-        sw.configure(bg=hiColor)
-        sw.resizable(0,0)
-        sw.title('Pensionado')
-        sw.iconbitmap('Images/user.ico')
+        self.sw = Toplevel()
+        self.sw.geometry('500x350')
+        self.sw.configure(bg=hiColor)
+        self.sw.resizable(0,0)
+        self.sw.title('Pensionado')
+        self.sw.iconbitmap('Images/user.ico')
         
-        Vender(sw)
+        Vender(self.sw)
 
     def mayus(self,nombreB):
         result=""
