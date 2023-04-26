@@ -17,7 +17,6 @@ pw.iconbitmap('Images/user.ico')
 fonttxt = 'Arial'
 posx=430
 posy=100
-
 flog = Frame(pw,width=1200,height=675,bg=colorbg)
 flog.place(x=0, y=0)
 #Import the image using PhotoImage function
