@@ -19,6 +19,7 @@ class Pagos:
     def __init__(self,sw):
         self.fVent = Frame(sw,width=500,height=350,bg=self.hiColor)
         self.fVent.place(x=0, y=0)
+        self.name=StringVar()
         #botones
         AddPago= self.btn(350,self.celHt+20, '-', '#FFFFFF', self.colorbg, self.CmdPago, 'Arial', 12,'bold',10,1)
         #Tabla
@@ -33,10 +34,13 @@ class Pagos:
         self.tabladata.heading("col2",text="FechaPago",anchor=CENTER)
         self.tabladata.heading("col3",text="EstadoPago",anchor=CENTER)
         self.tabladata.place(x=20,y=20)
-        cur = self.conn.consultaBD("SELECT id, Nombre,FechaPago,`Estado de pago_id` FROM Pensionado.Pensionistas")
-        for row in cur:
-            id, comida,FechaPago,Pago= row
-            self.tabladata.insert('', 'end', text='', values=[comida, FechaPago,Pago])
+        self.updateTbl()
+        self.tabladata.bind("<<TreeviewSelect>>", self.SelectItem)
+    def SelectItem(self,a):
+        selectedItem=self.tabladata.selection()[0]
+        nombre=self.tabladata.item(selectedItem)['values'][0]
+        self.name=nombre
+        return nombre
     def btn(self,x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
             #Botones para menu
             def on_enter(e):
@@ -54,12 +58,17 @@ class Pagos:
     def CmdPago(self):
         hoy = date.today().strftime('%Y-%m-%d')
         print(self.tabladata.get_children())
-        nombre = self.tabladata.item("I001", "values")[0]
+        nombre =self.name
         nombre_str = str(nombre)
-        print(nombre_str)
         PagoC=self.conn.consultaBD("SELECT m_atrasado FROM  pensionistas  JOIN `Estado de pago` ON pensionistas.`Estado de pago_id`=`Estado de pago`.id where pensionistas.nombre ='"+nombre+"'")
         Pago=int(PagoC.fetchone()[0])
         print("----"+str(Pago))
         if(Pago>0):
-            cur = self.conn.consultaBD("UPDATE pensionistas SET m_atrasado =(m_atrasado - 1) FROM pensionistas JOIN `Estado de pago` ON pensionistas.`Estado de pago_id`=`Estado de pago`.id  WHERE pensionistas.nombre = '" + nombre_str + "'")
-        
+            cur = self.conn.consultaBD("UPDATE `estado de pago` JOIN pensionistas ON `estado de pago`.id = pensionistas.`Estado de pago_id` SET `estado de pago`.m_atrasado = (`estado de pago`.m_atrasado - 1) WHERE pensionistas.nombre = '" + nombre_str + "'")
+        self.updateTbl()
+    def updateTbl(self):
+        print("===========================================")
+        cur = self.conn.consultaBD(" SELECT * FROM  pensionistas  JOIN `Estado de pago` ON pensionistas.`Estado de pago_id`=`Estado de pago`.id")
+        for row in cur:
+            id, nombre,_,FechaPago,_,_,_,Pago= row
+            self.tabladata.insert('', 'end', text='', values=[nombre, FechaPago,Pago])
