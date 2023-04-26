@@ -6,9 +6,9 @@ class conexion:
                 self.conn=mariadb.connect(
                     host="localhost",
                     user="root",
-                    password="123456789",
-                    #password="admin",
-                    database="pensionado",
+                    #password="123456789",
+                    password="admin",
+                    database="Pensionado",
                     autocommit=True
                 )
                 print("Conexion exitosa")
@@ -20,6 +20,7 @@ class conexion:
             cur = self.conn.cursor()
             id2=cur.execute(query)
             print("PRIMERO   "+str(id2))
+            
             return cur
         except mariadb.Error as e:
             print(e)

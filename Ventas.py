@@ -15,6 +15,7 @@ hiColor='#65A0A3'
 class Ventas:
     def __init__(self,ventanaPrincipal):
         self.conn = conexion()
+        
         print("=================================================================================")
         self.w = Frame(ventanaPrincipal,width=1200,height=675,bg='#3F5657')
         self.w.place(x=0, y=0)
@@ -43,20 +44,24 @@ class Ventas:
         self.MenuP=self.btn(0, 0, 'Menu', '#FFFFFF', hiColor, self.Correcto, 'Arial', 12,'bold',8,2)
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
-        self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3","col4","col5",), height=21)
+        self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3","col4","col5","col6"), height=21)
         self.tabladata.column("#0", width=40)
-        self.tabladata.column("col1",width=200, anchor=CENTER)
-        self.tabladata.column("col2",width=80, anchor=CENTER)
-        self.tabladata.column("col3",width=50, anchor=CENTER)
-        self.tabladata.column("col4",width=50, anchor=CENTER)
-        self.tabladata.column("col5",width=50, anchor=CENTER)
+        self.tabladata.column("col1",width=150, anchor=CENTER)
+        self.tabladata.column("col2",width=70, anchor=CENTER)
+        self.tabladata.column("col3",width=45, anchor=CENTER)
+        self.tabladata.column("col4",width=45, anchor=CENTER)
+        self.tabladata.column("col5",width=45, anchor=CENTER)
+        self.tabladata.column("col5",width=45, anchor=CENTER)
+        self.tabladata.column("col6",width=85, anchor=CENTER)
         self.tabladata.heading("#0",text="Id",anchor=CENTER)
         self.tabladata.heading("col1",text="Comida",anchor=CENTER)
         self.tabladata.heading("col2",text="Proteina",anchor=CENTER)
         self.tabladata.heading("col3",text="Tipo 1",anchor=CENTER)
         self.tabladata.heading("col4",text="Tipo 2",anchor=CENTER)
         self.tabladata.heading("col5",text="Tipo 3",anchor=CENTER)
+        self.tabladata.heading("col6",text="fecha",anchor=CENTER)
         self.tabladata.place(x=680,y=70)
+        self.mostrarDatos()
     def cmd(self):
         self.conn.commit()
         self.w.destroy()
@@ -116,7 +121,13 @@ class Ventas:
         cantidad_filas = len(self.tabladata.get_children())+1
         comida = self.nombreComida.get()
         Proteina = self.comboProteina.get()
-        self.tabladata.insert("", tk.END, text=cantidad_filas, values=(comida, Proteina,1,5,5))
+        valor_Tipo1 = 0
+        valor_Tipo2 = 0
+        valor_Tipo3 = 0
+        valor_Fecha = '2023/04/25'
+        query = query = "INSERT INTO Pensionado.almuerzos (id, Nombre, Proteina, Tipo1, Tipo2, Tipo3, fecha) VALUES ({}, '{}', '{}', {}, {}, {}, '{}')".format(cantidad_filas, comida, Proteina, valor_Tipo1, valor_Tipo2, valor_Tipo3, valor_Fecha)
+        self.conn.consultaBD(query)
+        self.mostrarDatos()
         pass
     
     def SearchOnTable(self):
@@ -134,6 +145,7 @@ class Ventas:
         if(resultado == False): 
             self.AddToTable()
             self.setPlots()
+            
     def setPlots(self):
          ####Plot Pie####
         fig=plt.figure(figsize=(6,6),dpi=100)
@@ -185,3 +197,14 @@ class Ventas:
         return resultS
     def clearAll(self):
         pass
+    
+    def mostrarDatos(self,where=""):
+        registro=self.tabladata.get_children()
+        for registro in registro:
+            self.tabladata.delete(registro)
+        if len(where)>0:
+            cur=self.conn.consultaBD("SELECT id, Nombre, proteina, tipo1, tipo2, tipo3, fecha FROM Pensionado.almuerzos " + where + " ORDER BY id")
+        else:
+            cur=self.conn.consultaBD("SELECT id, Nombre, proteina, tipo1, tipo2, tipo3, fecha FROM Pensionado.almuerzos ORDER BY id")
+        for (id, Nombre, proteina, tipo1, tipo2, tipo3, fecha) in cur:
+            self.tabladata.insert('',0,text=id,values=[Nombre, proteina, tipo1, tipo2, tipo3, fecha])    
