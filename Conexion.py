@@ -6,8 +6,8 @@ class conexion:
                 self.conn=mariadb.connect(
                     host="localhost",
                     user="root",
-                    #password="123456789",
-                    password="admin",
+                    password="123456789",
+                    #password="admin",
                     database="Pensionado",
                     autocommit=True
                 )

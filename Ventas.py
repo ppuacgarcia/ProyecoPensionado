@@ -105,7 +105,7 @@ class Ventas:
         self.w.destroy()
         print("no entro")
     def Vender(self):
-        Vender()
+        Vender(self)
 
     def mayus(self,nombreB):
         result=""
@@ -145,7 +145,6 @@ class Ventas:
         if(resultado == False): 
             self.AddToTable()
             self.setPlots()
-            
     def setPlots(self):
          ####Plot Pie####
         fig=plt.figure(figsize=(6,6),dpi=100)
