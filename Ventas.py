@@ -62,6 +62,7 @@ class Ventas:
         self.tabladata.heading("col6",text="fecha",anchor=CENTER)
         self.tabladata.place(x=680,y=70)
         self.mostrarDatos()
+        self.setPlots()
     def cmd(self):
         self.conn.commit()
         self.w.destroy()
