@@ -49,9 +49,9 @@ class Vender:
         cur = self.conn.consultaBD("SELECT id, Nombre,tipo1, tipo2, tipo3 FROM Pensionado.almuerzos where fecha = '" + hoy + "'")
         for row in cur:
             id, comida, tipo1, tipo2, tipo3 = row
-            self.tabladata.insert('', 'end', text='', values=[comida, tipo1])
-            self.tabladata.insert('', 'end', text='', values=[comida, tipo2])
-            self.tabladata.insert('', 'end', text='', values=[comida, tipo3])
+            self.tabladata.insert('',0,text=id, values=[comida, tipo1])
+            self.tabladata.insert('',0,text=id, values=[comida, tipo2])
+            self.tabladata.insert('',0,text=id, values=[comida, tipo3])
         
     def btn(self,x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
             #Botones para menu
@@ -68,37 +68,93 @@ class Vender:
             buttons.place(x=x, y=y)
             return buttons
         
-        
     def Cmd1Tp1(self):
-        print("holamundo")
-        hoy = date.today().strftime('%Y-%m-%d')
+        print(self.tabladata.get_children())
+        nombre = self.tabladata.item("I001", "values")[1]
+        nombre_str = str(nombre)
+        print(nombre_str)
+        cur = self.conn.consultaBD("UPDATE almuerzos SET tipo1 = tipo1 + 1 WHERE nombre = '" + nombre_str + "'")
+        self.cmdUpdateTable()
+        
+        print(self.tabladata.get_children())
+        
+    def Cmd1Tp2(self):
         print(self.tabladata.get_children())
         nombre = self.tabladata.item("I001", "values")[0]
         nombre_str = str(nombre)
         print(nombre_str)
+        cur = self.conn.consultaBD("UPDATE almuerzos SET tipo2 = tipo2 + 1 WHERE nombre = '" + nombre_str + "'")
+        self.cmdUpdateTable()
+        
+    def Cmd1Tp3(self):
+        print(self.tabladata.get_children())
+        nombre = self.tabladata.item("I001", "values")[0]
+        nombre_str = str(nombre)
+        print(nombre_str)
+        cur = self.conn.consultaBD("UPDATE almuerzos SET tipo3 = tipo3 + 1 WHERE nombre = '" + nombre_str + "'")
+        self.cmdUpdateTable()
+        
+    def Cmd2Tp1(self):
+        print(self.tabladata.get_children())
+        nombre = self.tabladata.item("I004", "values")[0]
+        nombre_str = str(nombre)
+        print(nombre_str)
         cur = self.conn.consultaBD("UPDATE almuerzos SET tipo1 = tipo1 + 1 WHERE nombre = '" + nombre_str + "'")
+        self.cmdUpdateTable()
+        
+    def Cmd2Tp2(self):
+        print(self.tabladata.get_children())
+        nombre = self.tabladata.item("I004", "values")[0]
+        nombre_str = str(nombre)
+        print(nombre_str)
+        cur = self.conn.consultaBD("UPDATE almuerzos SET tipo2 = tipo2 + 1 WHERE nombre = '" + nombre_str + "'")
+        self.cmdUpdateTable()
+    
+    def Cmd2Tp3(self):
+        print(self.tabladata.get_children())
+        nombre = self.tabladata.item("I004", "values")[0]
+        nombre_str = str(nombre)
+        print(nombre_str)
+        cur = self.conn.consultaBD("UPDATE almuerzos SET tipo3 = tipo3 + 1 WHERE nombre = '" + nombre_str + "'")
+        self.cmdUpdateTable()
+        
+    def Cmd3Tp1(self):
+        print(self.tabladata.get_children())
+        nombre = self.tabladata.item("I007", "values")[0]
+        nombre_str = str(nombre)
+        print(nombre_str)
+        cur = self.conn.consultaBD("UPDATE almuerzos SET tipo1 = tipo1 + 1 WHERE nombre = '" + nombre_str + "'")
+        self.cmdUpdateTable()
+        
+    def Cmd3Tp2(self):
+        print(self.tabladata.get_children())
+        nombre = self.tabladata.item("I007", "values")[0]
+        nombre_str = str(nombre)
+        print(nombre_str)
+        cur = self.conn.consultaBD("UPDATE almuerzos SET tipo2 = tipo2 + 1 WHERE nombre = '" + nombre_str + "'")
+        self.cmdUpdateTable()
+        
+    def Cmd3Tp3(self):
+        print(self.tabladata.get_children())
+        nombre = self.tabladata.item("I007", "values")[0]
+        nombre_str = str(nombre)
+        print(nombre_str)
+        cur = self.conn.consultaBD("UPDATE almuerzos SET tipo3 = tipo3 + 1 WHERE nombre = '" + nombre_str + "'")
+        self.cmdUpdateTable()
+        
+    def cmdUpdateTable(self):
+        hoy = date.today().strftime('%Y-%m-%d')
+        registro=self.tabladata.get_children()
         for registro in registro:
             self.tabladata.delete(registro)
-            cur = self.conn.consultaBD("SELECT id, Nombre,tipo1, tipo2, tipo3 FROM Pensionado.almuerzos where fecha = '" + hoy + "'")
+        
+        #self.tabladata.delete(*self.tabladata.get_children())
+        cur = self.conn.consultaBD("SELECT id, Nombre,tipo1, tipo2, tipo3 FROM Pensionado.almuerzos where fecha = '" + hoy + "'")
         for row in cur:
             id, comida, tipo1, tipo2, tipo3 = row
-            self.tabladata.insert('', 'end', text='', values=[comida, tipo1])
-            self.tabladata.insert('', 'end', text='', values=[comida, tipo2])
-            self.tabladata.insert('', 'end', text='', values=[comida, tipo3])
-    def Cmd1Tp2(self):
-        print("holamundo")
-    def Cmd1Tp3(self):
-        print("holamundo")
-    def Cmd2Tp1(self):
-        print("holamundo")
-    def Cmd2Tp2(self):
-        print("holamundo")
-    def Cmd2Tp3(self):
-        print("holamundo")
-    def Cmd3Tp1(self):
-        print("holamundo")
-    def Cmd3Tp2(self):
-        print("holamundo")
-    def Cmd3Tp3(self):
-        print("holamundo")
+            self.tabladata.insert('',0,text=id, values=[comida, tipo1])
+            self.tabladata.insert('',0,text=id, values=[comida, tipo2])
+            self.tabladata.insert('',0,text=id, values=[comida, tipo3])
+            
+     
         
