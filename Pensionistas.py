@@ -49,7 +49,7 @@ class Pensionistas:
         self.tabladata.heading("col2",text="Nacimiento",anchor=CENTER)
         self.tabladata.heading("col3",text="Fecha pago",anchor=CENTER)
         self.tabladata.place(x=680,y=70)
-
+        self.mostrarDatos()
                
         
     def cmd(self):
@@ -110,11 +110,19 @@ class Pensionistas:
     
     def AddToTable(self):
         cantidad_filas = len(self.tabladata.get_children())+1
-        comida = self.nombrePens.get()
+        nombre = self.nombrePens.get()+""
         Nac = self.calNac.get()+""
         pago = self.calNac.get()+""
-        self.tabladata.insert("", tk.END, text=cantidad_filas, values=(comida, Nac, pago))
+        estadopago = 0
+        m_atrasado = 0
+        query = "INSERT INTO Pensionado.`estado de pago` (id, M_atrasado) VALUES ({}, {})".format(cantidad_filas, m_atrasado)
+        self.conn.consultaBD(query)
+        query = "INSERT INTO Pensionado.pensionistas (id, Nombre, FechaNac, FechaPago, `Estado de pago_id` ) VALUES ({}, '{}', '{}', '{}', {})".format(cantidad_filas, nombre, Nac, pago, cantidad_filas)
+        self.conn.consultaBD(query)
+        self.mostrarDatos()
         pass
+        
+        
     
     def SearchOnTable(self):
         resultado = False
@@ -133,3 +141,15 @@ class Pensionistas:
         
     def clearAll(self):
         pass
+    
+    
+    def mostrarDatos(self,where=""):
+        registro=self.tabladata.get_children()
+        for registro in registro:
+            self.tabladata.delete(registro)
+        if len(where)>0:
+            cur=self.conn.consultaBD("SELECT id, Nombre, FechaNac, FechaPago, `Estado de pago_id`  FROM Pensionado.pensionistas " + where + " ORDER BY id")
+        else:
+            cur=self.conn.consultaBD("SELECT id, Nombre, FechaNac, FechaPago, `Estado de pago_id`  FROM Pensionado.pensionistas ORDER BY id")
+        for (id, Nombre, FechaNac, FechaPago, Estadopago) in cur:
+            self.tabladata.insert('',0,text=id,values=[Nombre, FechaNac, FechaPago, Estadopago]) 
