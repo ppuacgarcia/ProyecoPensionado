@@ -8,12 +8,17 @@ import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvas
 from Ventas import *
 from Conexion import conexion
+from datetime import date
 class Vender:
+    conn = conexion()
+    
+
     celHt=29
     hiColor='#65A0A3'
     colorbg="#3F5657"
     fonttxt = 'Arial'
     def __init__(self,sw):
+        hoy = date.today().strftime('%Y-%m-%d')
         self.fVent = Frame(sw,width=500,height=350,bg=self.hiColor)
         self.fVent.place(x=0, y=0)
         #botones
@@ -36,6 +41,18 @@ class Vender:
         tabladata.heading("col1",text="Comida",anchor=CENTER)
         tabladata.heading("col2",text="Cantidad",anchor=CENTER)
         tabladata.place(x=20,y=20)
+        for i in range (1,4):
+            print(i)
+            
+        
+        
+        cur = self.conn.consultaBD("SELECT id, Nombre,tipo1, tipo2, tipo3 FROM Pensionado.almuerzos where fecha = '" + hoy + "'")
+        for row in cur:
+            id, comida, tipo1, tipo2, tipo3 = row
+            tabladata.insert('', 'end', text='', values=[comida, tipo1])
+            tabladata.insert('', 'end', text='', values=[comida, tipo2])
+            tabladata.insert('', 'end', text='', values=[comida, tipo3])
+        
     def btn(self,x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
             #Botones para menu
             def on_enter(e):
