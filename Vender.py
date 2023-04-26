@@ -43,9 +43,6 @@ class Vender:
         self.tabladata.place(x=20,y=20)
         for i in range (1,4):
             print(i)
-            
-        
-        
         cur = self.conn.consultaBD("SELECT id, Nombre,tipo1, tipo2, tipo3 FROM Pensionado.almuerzos where fecha = '" + hoy + "'")
         for row in cur:
             id, comida, tipo1, tipo2, tipo3 = row

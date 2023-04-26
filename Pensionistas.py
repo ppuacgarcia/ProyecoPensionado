@@ -8,7 +8,7 @@ import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvas
 from tkcalendar import *
 from Conexion import conexion
-
+from Pagos import *
 hiColor='#65A0A3'
 
 class Pensionistas:
@@ -37,20 +37,23 @@ class Pensionistas:
         #Botones
         self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.SearchOnTable, 'Arial', 12,'bold',18,2)
         self.MenuP=self.btn(0, 0, 'Menu', '#FFFFFF', hiColor, self.Correcto, 'Arial', 12,'bold',8,2)
+        self.Editar = self.btn(675, 600, 'vender', '#FFFFFF', hiColor, self.Pagos, 'Arial', 12,'bold',18,2)
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
-        self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3"), height=21)
+        self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3","col4"), height=21)
         self.tabladata.column("#0", width=40)
-        self.tabladata.column("col1",width=280, anchor=CENTER)
+        self.tabladata.column("col1",width=210, anchor=CENTER)
         self.tabladata.column("col2",width=70, anchor=CENTER)
         self.tabladata.column("col3",width=70, anchor=CENTER)
+        self.tabladata.column("col4",width=90, anchor=CENTER)
         self.tabladata.heading("#0",text="Id",anchor=CENTER)
         self.tabladata.heading("col1",text="Nombre",anchor=CENTER)
         self.tabladata.heading("col2",text="Nacimiento",anchor=CENTER)
         self.tabladata.heading("col3",text="Fecha pago",anchor=CENTER)
+        self.tabladata.heading("col4",text="Pagos faltantes",anchor=CENTER)
         self.tabladata.place(x=680,y=70)
         self.mostrarDatos()
-               
+        print(self.tabladata.item("I001","values")[0])
         
     def cmd(self):
         self.conn.commit()
@@ -95,9 +98,14 @@ class Pensionistas:
         tabla.place(x=x,y=y)
         tabla.config(height=1)
         return tabla
-    
-    
-
+    def Pagos(self):
+        sw = Toplevel()
+        sw.geometry('500x350')
+        sw.configure(bg=hiColor)
+        sw.resizable(0,0)
+        sw.title('Pensionado')
+        sw.iconbitmap('Images/user.ico')
+        Pagos(sw)
     def mayus(self,nombreB):
         result=""
         for i in range ( len (nombreB) ):
@@ -106,8 +114,6 @@ class Pensionistas:
             else:
                 result+=nombreB[i]
         return result
-    
-    
     def AddToTable(self):
         cantidad_filas = len(self.tabladata.get_children())+1
         nombre = self.nombrePens.get()+""
