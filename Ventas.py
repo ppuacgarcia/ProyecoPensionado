@@ -8,6 +8,7 @@ import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvas
 from MenuPrincipal import *
 from Hospedaje import *
+from Vender import *
 from Conexion import conexion
 hiColor='#65A0A3'
 
@@ -38,7 +39,7 @@ class Ventas:
 
         #Botones
         self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.SearchOnTable, 'Arial', 12,'bold',18,2)
-        self.vender = self.btn(675, 600, 'vender', '#FFFFFF', hiColor, self.clearAll, 'Arial', 12,'bold',18,2)
+        self.vender = self.btn(675, 600, 'vender', '#FFFFFF', hiColor, self.Vender, 'Arial', 12,'bold',18,2)
         self.MenuP=self.btn(0, 0, 'Menu', '#FFFFFF', hiColor, self.Correcto, 'Arial', 12,'bold',8,2)
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
@@ -88,16 +89,18 @@ class Ventas:
         buttons.bind("<Leave>", on_leave)
         buttons.place(x=x, y=y)
         return buttons
+
     def tb(self,x,y):
         tabla=Listbox(self.w)
         tabla.place(x=x,y=y)
         tabla.config(height=1)
         return tabla
-    
     def Correcto(self): 
         #MenP(self.w)
         self.w.destroy()
         print("no entro")
+    def Vender(self):
+        Vender()
 
     def mayus(self,nombreB):
         result=""
