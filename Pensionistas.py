@@ -30,9 +30,9 @@ class Pensionistas:
         #Cuadros de texto
         self.nombrePens=self.Ent(65, 250, 60)
         #Calendarios
-        self.calNac=DateEntry(self.w,width=61)
+        self.calNac=DateEntry(self.w,width=61, date_pattern='yyyy-mm-dd')
         self.calNac.place(x=250,y=90)
-        self.calPago=DateEntry(self.w,width=61)
+        self.calPago=DateEntry(self.w,width=61, date_pattern='yyyy-mm-dd')
         self.calPago.place(x=250,y=120)
         #Botones
         self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.SearchOnTable, 'Arial', 12,'bold',18,2)
