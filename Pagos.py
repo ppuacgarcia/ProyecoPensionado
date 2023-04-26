@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvas
 from Conexion import conexion
+from datetime import date
 hiColor='#65A0A3'
 
 class Pagos:
@@ -19,22 +20,23 @@ class Pagos:
         self.fVent = Frame(sw,width=500,height=350,bg=self.hiColor)
         self.fVent.place(x=0, y=0)
         #botones
-        AddComida1= self.btn(350,self.celHt+20, '+', '#FFFFFF', self.colorbg, self.Cmd1Tp1, 'Arial', 12,'bold',10,1)
-       
+        AddPago= self.btn(350,self.celHt+20, '-', '#FFFFFF', self.colorbg, self.CmdPago, 'Arial', 12,'bold',10,1)
         #Tabla
-        tabladata = ttk.Treeview(self.fVent)
-        tabladata=ttk.Treeview(self.fVent,columns=("col1","col2"), height=14)
-        tabladata.column("#0", width=40)
-        tabladata.column("col1",width=200, anchor=CENTER)
-        tabladata.column("col2",width=80, anchor=CENTER)
-        tabladata.heading("#0",text="Id",anchor=CENTER)
-        tabladata.heading("col1",text="Nombre",anchor=CENTER)
-        tabladata.heading("col2",text="FechaPago",anchor=CENTER)
-        tabladata.place(x=20,y=20)
-        cur = self.conn.consultaBD("SELECT id, Nombre,FechaPago FROM Pensionado.Pensionistas")
+        self.tabladata = ttk.Treeview(self.fVent)
+        self.tabladata=ttk.Treeview(self.fVent,columns=("col1","col2","col3"), height=14)
+        self.tabladata.column("#0", width=40)
+        self.tabladata.column("col1",width=120, anchor=CENTER)
+        self.tabladata.column("col2",width=80, anchor=CENTER)
+        self.tabladata.column("col3",width=80, anchor=CENTER)
+        self.tabladata.heading("#0",text="Id",anchor=CENTER)
+        self.tabladata.heading("col1",text="Nombre",anchor=CENTER)
+        self.tabladata.heading("col2",text="FechaPago",anchor=CENTER)
+        self.tabladata.heading("col3",text="EstadoPago",anchor=CENTER)
+        self.tabladata.place(x=20,y=20)
+        cur = self.conn.consultaBD("SELECT id, Nombre,FechaPago,`Estado de pago_id` FROM Pensionado.Pensionistas")
         for row in cur:
-            id, comida,FechaPago= row
-            tabladata.insert('', 'end', text='', values=[comida, FechaPago])
+            id, comida,FechaPago,Pago= row
+            self.tabladata.insert('', 'end', text='', values=[comida, FechaPago,Pago])
     def btn(self,x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
             #Botones para menu
             def on_enter(e):
@@ -49,21 +51,15 @@ class Pagos:
             buttons.bind("<Leave>", on_leave)
             buttons.place(x=x, y=y)
             return buttons
-    def Cmd1Tp1(self):
-        print("holamundo")
-    def Cmd1Tp2(self):
-        print("holamundo")
-    def Cmd1Tp3(self):
-        print("holamundo")
-    def Cmd2Tp1(self):
-        print("holamundo")
-    def Cmd2Tp2(self):
-        print("holamundo")
-    def Cmd2Tp3(self):
-        print("holamundo")
-    def Cmd3Tp1(self):
-        print("holamundo")
-    def Cmd3Tp2(self):
-        print("holamundo")
-    def Cmd3Tp3(self):
-        print("holamundo")
+    def CmdPago(self):
+        hoy = date.today().strftime('%Y-%m-%d')
+        print(self.tabladata.get_children())
+        nombre = self.tabladata.item("I001", "values")[0]
+        nombre_str = str(nombre)
+        print(nombre_str)
+        PagoC=self.conn.consultaBD("SELECT m_atrasado FROM  pensionistas  JOIN `Estado de pago` ON pensionistas.`Estado de pago_id`=`Estado de pago`.id where pensionistas.nombre ='"+nombre+"'")
+        Pago=int(PagoC.fetchone()[0])
+        print("----"+str(Pago))
+        if(Pago>0):
+            cur = self.conn.consultaBD("UPDATE pensionistas SET m_atrasado =(m_atrasado - 1) FROM pensionistas JOIN `Estado de pago` ON pensionistas.`Estado de pago_id`=`Estado de pago`.id  WHERE pensionistas.nombre = '" + nombre_str + "'")
+        
