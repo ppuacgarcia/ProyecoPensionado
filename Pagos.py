@@ -10,6 +10,7 @@ from Conexion import conexion
 hiColor='#65A0A3'
 
 class Pagos:
+    conn = conexion()
     celHt=29
     hiColor='#65A0A3'
     colorbg="#3F5657"
@@ -19,14 +20,7 @@ class Pagos:
         self.fVent.place(x=0, y=0)
         #botones
         AddComida1= self.btn(350,self.celHt+20, '+', '#FFFFFF', self.colorbg, self.Cmd1Tp1, 'Arial', 12,'bold',10,1)
-        AddComida2= self.btn(350,self.celHt*2+22, '+', '#FFFFFF', self.colorbg, self.Cmd1Tp2, 'Arial', 12,'bold',10,1)
-        AddComida3= self.btn(350,self.celHt*3+24, '+', '#FFFFFF', self.colorbg, self.Cmd1Tp3, 'Arial', 12,'bold',10,1)
-        AddComida4= self.btn(350,self.celHt*4+26, '+', '#FFFFFF', self.colorbg, self.Cmd2Tp1, 'Arial', 12,'bold',10,1)
-        AddComida5= self.btn(350,self.celHt*5+28, '+', '#FFFFFF', self.colorbg, self.Cmd2Tp2, 'Arial', 12,'bold',10,1)
-        AddComida6= self.btn(350,self.celHt*6+30, '+', '#FFFFFF', self.colorbg, self.Cmd2Tp3, 'Arial', 12,'bold',10,1)
-        AddComida7= self.btn(350,self.celHt*7+32, '+', '#FFFFFF', self.colorbg, self.Cmd3Tp1, 'Arial', 12,'bold',10,1)
-        AddComida8= self.btn(350,self.celHt*8+34, '+', '#FFFFFF', self.colorbg, self.Cmd3Tp2, 'Arial', 12,'bold',10,1)
-        AddComida9= self.btn(350,self.celHt*9+36, '+', '#FFFFFF', self.colorbg, self.Cmd3Tp3, 'Arial', 12,'bold',10,1)
+       
         #Tabla
         tabladata = ttk.Treeview(self.fVent)
         tabladata=ttk.Treeview(self.fVent,columns=("col1","col2"), height=14)
@@ -34,9 +28,13 @@ class Pagos:
         tabladata.column("col1",width=200, anchor=CENTER)
         tabladata.column("col2",width=80, anchor=CENTER)
         tabladata.heading("#0",text="Id",anchor=CENTER)
-        tabladata.heading("col1",text="Comida",anchor=CENTER)
-        tabladata.heading("col2",text="Cantidad",anchor=CENTER)
+        tabladata.heading("col1",text="Nombre",anchor=CENTER)
+        tabladata.heading("col2",text="FechaPago",anchor=CENTER)
         tabladata.place(x=20,y=20)
+        cur = self.conn.consultaBD("SELECT id, Nombre,FechaPago FROM Pensionado.Pensionistas")
+        for row in cur:
+            id, comida,FechaPago= row
+            tabladata.insert('', 'end', text='', values=[comida, FechaPago])
     def btn(self,x, y, text, bcolor, fcolor, command, font, siz, tipe,wdt,ht):
             #Botones para menu
             def on_enter(e):

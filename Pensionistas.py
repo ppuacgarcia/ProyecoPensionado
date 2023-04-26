@@ -40,18 +40,20 @@ class Pensionistas:
         self.Editar = self.btn(675, 600, 'vender', '#FFFFFF', hiColor, self.Pagos, 'Arial', 12,'bold',18,2)
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
-        self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3"), height=21)
+        self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3","col4"), height=21)
         self.tabladata.column("#0", width=40)
-        self.tabladata.column("col1",width=280, anchor=CENTER)
+        self.tabladata.column("col1",width=210, anchor=CENTER)
         self.tabladata.column("col2",width=70, anchor=CENTER)
         self.tabladata.column("col3",width=70, anchor=CENTER)
+        self.tabladata.column("col4",width=90, anchor=CENTER)
         self.tabladata.heading("#0",text="Id",anchor=CENTER)
         self.tabladata.heading("col1",text="Nombre",anchor=CENTER)
         self.tabladata.heading("col2",text="Nacimiento",anchor=CENTER)
         self.tabladata.heading("col3",text="Fecha pago",anchor=CENTER)
+        self.tabladata.heading("col4",text="Pagos faltantes",anchor=CENTER)
         self.tabladata.place(x=680,y=70)
         self.mostrarDatos()
-               
+        print(self.tabladata.item("I001","values")[0])
         
     def cmd(self):
         self.conn.commit()
@@ -112,8 +114,6 @@ class Pensionistas:
             else:
                 result+=nombreB[i]
         return result
-    
-    
     def AddToTable(self):
         cantidad_filas = len(self.tabladata.get_children())+1
         nombre = self.nombrePens.get()+""
