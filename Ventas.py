@@ -42,6 +42,7 @@ class Ventas:
         self.Guardar = self.btn(975, 600, 'guardar', '#FFFFFF', hiColor, self.SearchOnTable, 'Arial', 12,'bold',18,2)
         self.vender = self.btn(675, 600, 'vender', '#FFFFFF', hiColor, self.Vender, 'Arial', 12,'bold',18,2)
         self.MenuP=self.btn(0, 0, 'Menu', '#FFFFFF', hiColor, self.Correcto, 'Arial', 12,'bold',8,2)
+        self.actualizar = self.btn(375, 600, 'actualizat', '#FFFFFF', hiColor, self.mostrarDatos, 'Arial', 12,'bold',18,2)
         #Tabla
         self.tabladata = ttk.Treeview(self.w)
         self.tabladata=ttk.Treeview(self.w,columns=("col1","col2","col3","col4","col5","col6"), height=21)
@@ -132,7 +133,7 @@ class Ventas:
         valor_Tipo1 = 0
         valor_Tipo2 = 0
         valor_Tipo3 = 0
-        valor_Fecha = '2023/04/25'
+        valor_Fecha = '2023/04/26'
         query = query = "INSERT INTO Pensionado.almuerzos (id, Nombre, Proteina, Tipo1, Tipo2, Tipo3, fecha) VALUES ({}, '{}', '{}', {}, {}, {}, '{}')".format(cantidad_filas, comida, Proteina, valor_Tipo1, valor_Tipo2, valor_Tipo3, valor_Fecha)
         self.conn.consultaBD(query)
         self.mostrarDatos()
